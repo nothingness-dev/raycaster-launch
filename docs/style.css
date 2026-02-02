@@ -1,0 +1,136 @@
+:root {
+  --primary-color: #8a2be2;
+  --primary-dark: #6a1bb2;
+  --primary-light: #9d4edd;
+  --secondary-color: #a855f7;
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --card-bg: #1e1e1e;
+  --border-color: #333333;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --code-bg: #2d2d2d;
+  --code-color: #c8c8c8;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.navbar {
+  background-color: var(--card-bg);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  color: var(--secondary-color);
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo i {
+  font-size: 1.8rem;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+}
+
+.nav-links a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: all 0.3s;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+footer {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  text-align: center;
+  padding: 2rem 1rem;
+  margin-top: 3rem;
+  border-top: 2px solid var(--primary-color);
+}
+
+footer p {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.copyright {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  color: var(--secondary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .navbar .container {
+    flex-direction: column;
+  }
+
+  .nav-links {
+    margin-top: 1rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .logo {
+    font-size: 1.3rem;
+  }
+
+  .logo i {
+    font-size: 1.5rem;
+  }
+}
