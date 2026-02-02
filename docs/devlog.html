@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Technical Documentation - Ray Engine</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="devlog.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container">
+        <a href="index.html" class="logo">Ray Engine</a>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="devlog.html" class="active">Technical Docs</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main class="container devlog-content">
+      <h1>Ray Engine Technical Documentation</h1>
+
+
+      <article class="article-card">
+        <section>
+          <h3>Raycasting Logic: 2D Map to 3D Conversion</h3>
+          <p>
+            Ray Engine implements a raycasting algorithm to transform a simple
+            2D grid-based map into an interactive 3D first-person view. The
+            process works by casting multiple rays from the player's position
+            for each vertical column on the screen. Each ray travels through the
+            2D map using the DDA (Digital Differential Analyzer) algorithm until
+            it hits a wall. The distance to the wall determines the height of
+            the wall slice drawn on screen. Closer walls appear taller, creating
+            the illusion of depth. The engine casts 600 rays (one per screen
+            column) at different angles across the player's 66-degree field of
+            view, with each ray calculating precise collision points using the
+            worldMap array defined in map.c.
+          </p>
+
+          <div class="steps-container">
+            <div class="step-item">
+              <div class="step-number">1</div>
+              <p>
+                <strong>Ray Initialization:</strong> From main.c, the game loop
+                calls Render3DView() which calculates ray directions for each
+                screen column
+              </p>
+            </div>
+            <div class="step-item">
+              <div class="step-number">2</div>
+              <p>
+                <strong>Grid Traversal:</strong> Using DDA algorithm from
+                raycaster.c to efficiently traverse the 20×20 grid
+              </p>
+            </div>
+            <div class="step-item">
+              <div class="step-number">3</div>
+              <p>
+                <strong>Wall Detection:</strong> Checking worldMap[y][x] values
+                for collisions, where 1 represents walls
+              </p>
+            </div>
+            <div class="step-item">
+              <div class="step-number">4</div>
+              <p>
+                <strong>3D Projection:</strong> Calculating wall heights based
+                on perpendicular distance to camera plane
+              </p>
+            </div>
+          </div>
+
+          <div class="code-container">
+            <pre>
+// Core raycasting logic from raycaster.c
+for (int x = 0; x < screenWidth; x++) {
+    float cameraX = 2 * x / (float)screenWidth - 1;
+    Vector2 rayDir = {
+        player->direction.x + player->plane.x * cameraX,
+        player->direction.y + player->plane.y * cameraX
+    };
+    
+    // DDA algorithm implementation
+    while (!hit) {
+        if (sideDist.x < sideDist.y) {
+            sideDist.x += deltaDist.x;
+            mapX += stepDir.x;
+            side = 0;
+        } else {
+            sideDist.y += deltaDist.y;
+            mapY += stepDir.y;
+            side = 1;
+        }
+        if (worldMap[mapY][mapX] > 0) hit = true;
+    }
+}</pre
+            >
+          </div>
+        </section>
+      </article>
+
+
+      <article class="article-card">
+        <section>
+          <h3>Programming Challenges in C Development</h3>
+
+          <div class="challenge-item">
+            <h4>Fish-eye Effect Problem and Solution</h4>
+            <p>
+              The most challenging bug encountered during development was the
+              <strong>fish-eye distortion effect</strong>. In early versions,
+              walls appeared curved and distorted when viewed at angles. This
+              occurred because the initial implementation used Euclidean
+              distance instead of perpendicular distance to the camera plane.
+            </p>
+            <p>
+              The problem was in the distance calculation in raycaster.c. Rays
+              at the edges of the screen were calculated with incorrect
+              distances, causing the barrel-like distortion effect.
+            </p>
+
+            <div class="code-container">
+              <pre>
+// Problem: Incorrect distance causing fish-eye effect
+float incorrectDistance = sqrt(pow(mapX - playerX, 2) + pow(mapY - playerY, 2));
+
+// Solution: Correct perpendicular distance calculation
+float perpWallDist;
+if (side == 0) perpWallDist = sideDist.x - deltaDist.x;
+else perpWallDist = sideDist.y - deltaDist.y;
+
+// Mathematical correction
+corrected_distance = distance * cos(ray_angle - player_angle);</pre
+              >
+              <p>
+                The corrected formula uses perpendicular distance to eliminate
+                distortion
+              </p>
+            </div>
+
+            <p>
+              After implementing the corrected distance calculation, walls
+              appeared straight and properly aligned. This was verified by
+              testing straight corridors at various angles in the game
+              environment.
+            </p>
+          </div>
+
+          <div class="challenge-item">
+            <h4>Memory Management Challenges</h4>
+            <p>
+              Implementing robust memory management in pure C without automatic
+              garbage collection required careful planning. Key challenges
+              included:
+            </p>
+            <ul>
+              <li>Preventing memory leaks in the game loop</li>
+              <li>
+                Efficient allocation and deallocation of game state structures
+              </li>
+              <li>Managing texture data without fragmentation</li>
+              <li>Ensuring proper cleanup on game exit</li>
+            </ul>
+            <p>
+              The solution involved implementing a structured memory management
+              system with clear ownership rules for each data structure defined
+              in player.h and map.h. All allocations were paired with explicit
+              deallocations, and valgrind was used extensively to verify no
+              memory leaks existed.
+            </p>
+          </div>
+
+          <div class="challenge-item">
+            <h4>Player Movement and Collision Detection</h4>
+            <p>
+              Another significant challenge was implementing smooth player
+              movement with accurate collision detection. The player.c file
+              handles this by separating X and Y axis movement checks:
+            </p>
+            <div class="code-container">
+              <pre>
+// From player.c - Collision detection implementation
+int IsWall(int x, int y) {
+    if (x < 0 || x >= MAP_WIDTH || y < 0 || y >= MAP_HEIGHT)
+        return 1;
+    return worldMap[y][x] == 1;
+}
+
+// Separate X and Y movement checks
+Vector2 newPosX = {newPos.x, player->position.y};
+if (!IsWall(mapX, mapY)) {
+    player->position.x = newPosX.x;
+}
+
+Vector2 newPosY = {player->position.x, newPos.y};
+if (!IsWall(mapX, mapY)) {
+    player->position.y = newPosY.y;
+}</pre
+              >
+            </div>
+            <p>
+              This approach ensures the player cannot move through walls while
+              maintaining smooth movement along open paths. The collision system
+              works with the 20×20 grid defined in map.c and updates at 60 FPS
+              as controlled by main.c.
+            </p>
+          </div>
+        </section>
+      </article>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>Name: Roham Hadadi</p>
+        <p>Student ID: 404521255</p>
+        <p class="copyright">© 2026 - under MIT License</p>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,288 @@
+.devlog-content {
+    padding: 3rem 0;
+}
+
+.devlog-content h1 {
+    color: var(--secondary-color);
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+.article-card {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+}
+
+.article-card h3 {
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+    font-size: 1.4rem;
+}
+
+.steps-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.step-item {
+    background: var(--bg-color);
+    padding: 1.5rem 1rem;
+    border-radius: 8px;
+    border-left: 3px solid var(--primary-color);
+    text-align: center;
+}
+
+.step-number {
+    background: var(--primary-color);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.step-item p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.architecture-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.architecture-box {
+    background: var(--bg-color);
+    padding: 2rem 1.5rem;
+    border-radius: 8px;
+    border-top: 3px solid var(--primary-color);
+}
+
+.architecture-box h4 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.architecture-box ul {
+    list-style: none;
+    padding-left: 1rem;
+}
+
+.architecture-box li {
+    margin-bottom: 0.8rem;
+    color: var(--text-color);
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.architecture-box li:before {
+    content: "▶";
+    color: var(--secondary-color);
+    position: absolute;
+    left: 0;
+}
+
+.challenge-item {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.challenge-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.challenge-item h4 {
+    color: var(--primary-color);
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+}
+
+.code-container {
+    background: var(--code-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    border-left: 4px solid var(--primary-color);
+}
+
+.code-container pre {
+    color: var(--code-color);
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    overflow-x: auto;
+    margin-bottom: 0.5rem;
+}
+
+.code-container p {
+    color: var(--text-color);
+    opacity: 0.8;
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-top: 0.5rem;
+}
+
+
+.challenge-item ul {
+    padding-left: 1.5rem;
+    margin: 1rem 0;
+}
+
+.challenge-item li {
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    position: relative;
+}
+
+.challenge-item ul li {
+    padding-left: 1rem;
+}
+
+.challenge-item ul li:before {
+    content: "•";
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+}
+
+
+.performance-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    border: 1px solid var(--border-color);
+}
+
+.performance-table th,
+.performance-table td {
+    border: 1px solid var(--border-color);
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.performance-table th {
+    background: var(--primary-color);
+    color: white;
+    font-weight: 600;
+}
+
+.performance-table tr:nth-child(even) {
+    background: var(--bg-color);
+}
+
+.performance-table tr:hover {
+    background: var(--card-bg);
+}
+
+.performance-table td:first-child {
+    font-weight: 600;
+    color: var(--secondary-color);
+    text-align: left;
+}
+
+
+.performance-table td:last-child {
+    text-align: left;
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+
+.code-container pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+}
+
+
+.challenge-item + .challenge-item {
+    margin-top: 2rem;
+}
+
+
+.article-card > section {
+    margin-bottom: 1.5rem;
+}
+
+.article-card > section:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .architecture-container {
+        grid-template-columns: 1fr;
+    }
+
+    .steps-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .article-card {
+        padding: 1.5rem;
+    }
+    
+    .devlog-content h1 {
+        font-size: 2rem;
+    }
+    
+    .performance-table {
+        font-size: 0.9rem;
+    }
+    
+    .performance-table th,
+    .performance-table td {
+        padding: 0.5rem;
+    }
+    
+    .code-container pre {
+        font-size: 0.9rem;
+        padding: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .steps-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .performance-table {
+        font-size: 0.8rem;
+    }
+    
+    .performance-table th,
+    .performance-table td {
+        padding: 0.4rem;
+        font-size: 0.8rem;
+    }
+    
+    .challenge-item h4 {
+        font-size: 1rem;
+    }
+    
+    .article-card h3 {
+        font-size: 1.2rem;
+    }
+}
